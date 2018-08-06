@@ -24,22 +24,6 @@ public class ChatServiceTest {
 
 
 	@Test
-	public void testCreassteValidChatText() {
-		/*
-		 * String payload = "asdasdasdasda";
-		 * 
-		 * ChatData chatData = new ChatData(payload, Text.class.getSimpleName());
-		 * 
-		 * Mockito.when(chatRepository.save(Mockito.any(ChatData.class)).thenReturn(chatData);
-		 * 
-		 * ChatData createdRecord = chatService.createRecord(new Text(payload));
-		 * 
-		 * Assert.assertEquals(chatData, createdRecord);
-		 */
-	}
-
-
-	@Test
 	public void testCreateValidChatText() {
 		String payload = "validmessage";
 
@@ -65,8 +49,8 @@ public class ChatServiceTest {
 
 		Assert.assertEquals(textMsg, createdRecord);
 	}
-	
-	
+
+
 	@Test
 	public void testCreateValidChatEmotion() {
 		String payload = "valid";
@@ -79,7 +63,8 @@ public class ChatServiceTest {
 
 		Assert.assertEquals(emotionMsg, createdRecord);
 	}
-	
+
+
 	@Test(expected = InvalidMessageInputException.class)
 	public void testCreateInvalidChatEmotion() {
 		String payload = "invalid12message";
