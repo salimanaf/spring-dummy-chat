@@ -13,8 +13,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.demo.chat.controller.ApiExceptionHandler;
 import com.demo.chat.controller.ChatController;
 import com.demo.chat.dto.Payload;
+import com.demo.chat.entity.EmotionEntity;
 import com.demo.chat.entity.TextEntity;
 import com.demo.chat.exception.InvalidMessageInputException;
 import com.demo.chat.service.ChatService;
@@ -29,7 +31,7 @@ public class ChatControllerTest {
 
 	@Before
 	public void setUp() {
-		this.mockMvc = MockMvcBuilders.standaloneSetup(this.chatController).build();
+		this.mockMvc = MockMvcBuilders.standaloneSetup(this.chatController).setControllerAdvice(new ApiExceptionHandler()).build();
 	}
 
 
@@ -43,15 +45,37 @@ public class ChatControllerTest {
 
 		this.mockMvc.perform(post("/messages/send_text").param("payload", payload)).andExpect(status().isCreated());
 	}
-	
-/*	@Test
+
+
+	@Test
 	public void testCreateInvalidChatText() throws Exception {
 		String payload = "";
-		
+
 		Mockito.when(chatService.createRecord(Mockito.any(Payload.class))).thenThrow(InvalidMessageInputException.class);
 
 		this.mockMvc.perform(post("/messages/send_text").param("payload", payload)).andExpect(status().isPreconditionFailed());
-	}*/
-	
+	}
+
+
+	@Test
+	public void testCreateValidChatEmotion() throws Exception {
+		String payload = "valid";
+
+		EmotionEntity emotionMsg = new EmotionEntity(payload);
+
+		Mockito.when(chatService.createRecord(Mockito.any(Payload.class))).thenReturn(emotionMsg);
+
+		this.mockMvc.perform(post("/messages/send_emotion").param("payload", payload)).andExpect(status().isCreated());
+	}
+
+
+	@Test
+	public void testCreateInvalidChatEmotion() throws Exception {
+		String payload = "asdda12asda";
+
+		Mockito.when(chatService.createRecord(Mockito.any(Payload.class))).thenThrow(InvalidMessageInputException.class);
+
+		this.mockMvc.perform(post("/messages/send_emotion").param("payload", payload)).andExpect(status().isPreconditionFailed());
+	}
 
 }
