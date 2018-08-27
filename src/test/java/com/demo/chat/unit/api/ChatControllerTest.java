@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -43,7 +44,7 @@ public class ChatControllerTest {
 
 		Mockito.when(chatService.createRecord(Mockito.any(Payload.class))).thenReturn(textMsg);
 
-		this.mockMvc.perform(post("/messages/send_text").param("payload", payload)).andExpect(status().isCreated());
+		this.mockMvc.perform(post("/messages/send_text").param("payload", payload).contentType(MediaType.MULTIPART_FORM_DATA)).andExpect(status().isCreated());
 	}
 
 
@@ -53,7 +54,7 @@ public class ChatControllerTest {
 
 		Mockito.when(chatService.createRecord(Mockito.any(Payload.class))).thenThrow(InvalidMessageInputException.class);
 
-		this.mockMvc.perform(post("/messages/send_text").param("payload", payload)).andExpect(status().isPreconditionFailed());
+		this.mockMvc.perform(post("/messages/send_text").param("payload", payload).contentType(MediaType.MULTIPART_FORM_DATA)).andExpect(status().isPreconditionFailed());
 	}
 
 
@@ -65,7 +66,7 @@ public class ChatControllerTest {
 
 		Mockito.when(chatService.createRecord(Mockito.any(Payload.class))).thenReturn(emotionMsg);
 
-		this.mockMvc.perform(post("/messages/send_emotion").param("payload", payload)).andExpect(status().isCreated());
+		this.mockMvc.perform(post("/messages/send_emotion").param("payload", payload).contentType(MediaType.MULTIPART_FORM_DATA)).andExpect(status().isCreated());
 	}
 
 
@@ -75,7 +76,7 @@ public class ChatControllerTest {
 
 		Mockito.when(chatService.createRecord(Mockito.any(Payload.class))).thenThrow(InvalidMessageInputException.class);
 
-		this.mockMvc.perform(post("/messages/send_emotion").param("payload", payload)).andExpect(status().isPreconditionFailed());
+		this.mockMvc.perform(post("/messages/send_emotion").param("payload", payload).contentType(MediaType.MULTIPART_FORM_DATA)).andExpect(status().isPreconditionFailed());
 	}
 
 }

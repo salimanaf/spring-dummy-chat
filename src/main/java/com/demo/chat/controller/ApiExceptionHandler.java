@@ -14,4 +14,10 @@ public class ApiExceptionHandler {
 	public ResponseEntity<?> invalidMessageInputException(Exception e) {
 		return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
 	}
+
+
+	@ExceptionHandler({ UnsupportedOperationException.class })
+	public ResponseEntity<?> unsupportedOperationException(Exception e) {
+		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+	}
 }
